@@ -1,0 +1,91 @@
+version: "2"
+
+services:
+
+    # Custom built postgres image with the following databases: acs, aps, and keycloak
+    postgres:
+        container_name: postgres_custom
+        build:
+            context: ./postgres
+            dockerfile: Dockerfile
+        image: postgres_custom:development
+        mem_limit: 512m
+        command: postgres -c max_connections=300 -c log_min_messages=LOG
+        ports:
+            - 5433:5432
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+
+    auth:
+        image: alfresco/alfresco-identity-service:1.7.0
+        # image: alfresco/alfresco-identity-service:1.8.0
+        environment:
+          KEYCLOAK_USER: admin
+          KEYCLOAK_PASSWORD: admin
+          # KEYCLOAK_IMPORT: alfresco-realm.json
+          DB_VENDOR: postgres
+          DB_ADDR: "postgres:5432"
+          DB_DATABASE: keycloak
+          DB_USER: alfresco
+          DB_PASSWORD: alfresco
+          JAVA_OPTS: "-Djboss.socket.binding.port-offset=808 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true"
+          PROXY_ADDRESS_FORWARDING: 'true'
+          KEYCLOAK_FRONTEND_URL: http://localhost/auth
+        ports:
+          - 8888:8888
+        depends_on:
+          - postgres
+
+    apacheds:
+      image: kadimasolutions/apacheds:latest
+      tty: true
+      stdin_open: true
+      ports:
+      - 10389:10389
+      - 10636:10636
+      volumes:
+      - apacheds-data:/opt/apacheds/instances/default
+
+    # apacheds:
+    #     image: eugenmayer/apacheds:latest
+    #     container_name: apacheds
+    #     environment:
+    #       DS_HOST: "example.dev"
+    #       DS_SASL_HOST: "example.dev"
+    #       DS_SASL_REALM: "EXAMPLE.DEV"
+    #       DS_SASL_DOMAIN: "EXAMPLE.DEV"
+    #       DS_SASL_BASEDN: "dc=example,dc=dev"
+    #       DS_PARTITION1_ID: "devexample"
+    #       DS_PARTITION1_SUFFIX: "dc=example,dc=dev"
+    #       DS_KRB_REALM: "EXAMPLE.DEV"
+    #       DS_KRB_BASEDN: "dc=example,dc=dev"
+    #       DS_KEYSTORE_PATH: /bootstrap/apacheds.keystore
+    #     tty: true
+    #     stdin_open: true
+    #     ports:
+    #       - "389:10389"
+    #     volumes:
+    #       - ./certs:/certs
+    #       - data:/data
+    #       - bootstrap:/bootstrap
+    #       - conf:/conf
+
+    # ldap:
+    #    image: greggigon/apacheds
+    #    environment:
+    #      - BOOTSTRAP_FILE=/bootstrap/demo.ldif
+    #    restart: always
+    #    ports:
+    #      - 10389:10389
+    #    volumes:
+    #      - ./data/ldap/data:/data
+    #      - ./ldap/bootstrap:/bootstrap
+
+    
+    
+
+# We need a named Docker Volume instead of local mapping, which does not work on Windows
+volumes:
+  pgdata:
+  apacheds-data:
+  acme-data:

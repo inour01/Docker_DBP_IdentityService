@@ -1,0 +1,27 @@
+# Mac
+.DS_Store
+
+# Eclipse
+.classpath
+.settings
+.project
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# NodeJs
+adf/dist
+adf/node_modules
+adf/dist.tar.gz
+
+# Maven
+target
+*.log
+*.log.*
+
+# Don't store any runtime environment data in GitHub
+docker-compose-identity/data
+docker-compose-dbp/data
+
