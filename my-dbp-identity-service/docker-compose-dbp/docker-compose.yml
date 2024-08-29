@@ -47,10 +47,10 @@ services:
         -Dindex.subsystem.name=solr6
         -Dshare.host=127.0.0.1
         -Dshare.port=8080
-        -Dalfresco.host=localhost
+        -Dalfresco.host=ec2-35-173-242-221.compute-1.amazonaws.com
         -Dalfresco.port=8080
         -Dcsrf.filter.enabled=false
-        -Daos.baseUrlOverwrite=http://localhost:8080/alfresco/aos
+        -Daos.baseUrlOverwrite=http://ec2-35-173-242-221.compute-1.amazonaws.com/alfresco/aos
         -Dmessaging.broker.url="failover:(nio://activemq:61616)?timeout=3000&jms.useCompression=true"
         -Ddeployment.method=DOCKER_COMPOSE
         -DlocalTransform.core-aio.url=http://transform-core-aio:8090/
@@ -81,7 +81,7 @@ services:
       JAVA_OPTS: >-
         -XX:MinRAMPercentage=50
         -XX:MaxRAMPercentage=80
-        -Dalfresco.host=localhost
+        -Dalfresco.host=ec2-35-173-242-221.compute-1.amazonaws.com
         -Dalfresco.port=8080
         -Dalfresco.context=alfresco
         -Dalfresco.protocol=http
@@ -127,7 +127,7 @@ services:
     image: alfresco/alfresco-content-app:4.1.0
     mem_limit: 128m
     environment:
-      APP_BASE_SHARE_URL: "http://localhost/aca/#/preview/s"
+      APP_BASE_SHARE_URL: "http://ec2-35-173-242-221.compute-1.amazonaws.com/aca/#/preview/s"
   proxy:
     image: nginx:stable-alpine
     mem_limit: 128m

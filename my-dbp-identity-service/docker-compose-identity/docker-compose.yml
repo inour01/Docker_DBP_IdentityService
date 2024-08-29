@@ -30,7 +30,7 @@ services:
           DB_PASSWORD: alfresco
           JAVA_OPTS: "-Djboss.socket.binding.port-offset=808 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true"
           PROXY_ADDRESS_FORWARDING: 'true'
-          KEYCLOAK_FRONTEND_URL: http://localhost/auth
+          KEYCLOAK_FRONTEND_URL: http://ec2-35-173-242-221.compute-1.amazonaws.com/auth
         ports:
           - 8888:8888
         depends_on:
