@@ -30,21 +30,21 @@ services:
           DB_PASSWORD: alfresco
           JAVA_OPTS: "-Djboss.socket.binding.port-offset=808 -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true"
           PROXY_ADDRESS_FORWARDING: 'true'
-          KEYCLOAK_FRONTEND_URL: http://ec2-35-173-242-221.compute-1.amazonaws.com/auth
+          KEYCLOAK_FRONTEND_URL: http://ec2-54-227-229-112.compute-1.amazonaws.com/auth
         ports:
           - 8888:8888
         depends_on:
           - postgres
 
-    apacheds:
-      image: kadimasolutions/apacheds:latest
-      tty: true
-      stdin_open: true
-      ports:
-      - 10389:10389
-      - 10636:10636
-      volumes:
-      - apacheds-data:/opt/apacheds/instances/default
+    # apacheds:
+    #   image: kadimasolutions/apacheds:latest
+    #   tty: true
+    #   stdin_open: true
+    #   ports:
+    #   - 10389:10389
+    #   - 10636:10636
+    #   volumes:
+    #   - apacheds-data:/opt/apacheds/instances/default
 
     # apacheds:
     #     image: eugenmayer/apacheds:latest
@@ -87,5 +87,5 @@ services:
 # We need a named Docker Volume instead of local mapping, which does not work on Windows
 volumes:
   pgdata:
-  apacheds-data:
+  # apacheds-data:
   acme-data:
